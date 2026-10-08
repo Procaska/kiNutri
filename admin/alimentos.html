@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alimentos | KiNutri Admin</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+
+<body onload="protegerRota('admin')">
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <a href="admin.html" class="admin-logo">KiNutri Admin</a>
+
+      <nav class="admin-menu">
+        <a href="admin.html">Dashboard</a>
+        <a href="usuarios.html">Usuários</a>
+        <a href="planos.html">Planos</a>
+        <a href="alimentos.html" class="active">Alimentos</a>
+        <a href="faqs.html">FAQs</a>
+
+        <button class="theme-toggle" onclick="toggleTheme()">
+          🌙 Modo escuro
+        </button>
+
+        <button onclick="logout()">Sair</button>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <section class="admin-topbar">
+        <button class="admin-mobile-btn" onclick="toggleSidebar()">
+          ☰
+        </button>
+
+        <h1>Gerenciar Alimentos</h1>
+        <p>Cadastre alimentos para usar nos planos alimentares.</p>
+      </section>
+
+      <section class="admin-section">
+        <form id="alimentoForm" class="admin-form">
+          <input type="text" id="alimentoNome" placeholder="Nome do alimento" required>
+          <input type="text" id="alimentoCategoria" placeholder="Categoria" required>
+          <input type="number" id="alimentoCalorias" placeholder="Calorias" required>
+          <input type="number" id="alimentoProteina" placeholder="Proteína">
+
+          <button class="btn btn-primary" type="submit">
+            Criar alimento
+          </button>
+        </form>
+
+        <input
+          type="text"
+          id="searchAlimentos"
+          placeholder="Pesquisar alimentos..."
+          class="search-input"
+        />
+
+        <div class="table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Alimento</th>
+                <th>Categoria</th>
+                <th>Calorias</th>
+                <th>Proteína</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+
+            <tbody id="alimentosTable">
+              <tr id="alimentosLoading">
+                <td colspan="5" class="loading-state">
+                    Carregando alimentos...
+    </td>
+  </tr>
+</tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/notificacoes.js"></script>
+<script src="../assets/js/alimentos.js"></script>
+</body>
+</html>

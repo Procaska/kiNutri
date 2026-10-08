@@ -1,0 +1,29 @@
+{
+  "name": "sorfabiosantos/acme-manha",
+  "description": "API do projeto KiNutri",
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "Fábio Santos",
+      "email": "fabiosantos@ifsul.edu.br",
+      "homepage": "https://www.ifsul.edu.br",
+      "role": "Developer"
+    }
+  ],
+  "config": {
+    "vendor-dir": "vendor"
+  },
+  "autoload": {
+    "psr-4": {
+      "source\\": "source/"
+    },
+    "files": [
+      "source/Config/Config.php"
+    ]
+  },
+  "require": {
+    "php": "8.1.*",
+    "ext-pdo": "*",
+    "coffeecode/router": "2.0.2"
+  }
+}

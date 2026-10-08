@@ -1,0 +1,284 @@
+@import url('./variables.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, Arial, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--black);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+.container {
+  width: 90%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.navbar {
+  background: var(--white);
+  padding: 18px 0;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.nav-links a {
+  font-weight: 500;
+  color: var(--black);
+}
+
+.nav-links a:hover {
+  color: var(--green-dark);
+}
+
+.btn {
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 700;
+  transition: var(--transition);
+  display: inline-block;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  border: 1px solid var(--green);
+  color: var(--green-dark);
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: var(--green);
+  color: var(--white);
+}
+
+.hero {
+  padding: 90px 0;
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 50px;
+}
+
+.hero-text h1 {
+  font-size: 3.4rem;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero-text h1 span {
+  color: var(--green-dark);
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  color: var(--gray);
+  margin-bottom: 30px;
+  line-height: 1.7;
+}
+
+.hero-card {
+  background: var(--white);
+  padding: 34px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.hero-card h3 {
+  margin-bottom: 20px;
+}
+
+.metric {
+  background: var(--bg);
+  padding: 18px;
+  border-radius: var(--radius-md);
+  margin-bottom: 14px;
+}
+
+.metric strong {
+  display: block;
+  color: var(--green-dark);
+  font-size: 1.6rem;
+}
+
+.section {
+  padding: 70px 0;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.section-title h2 {
+  font-size: 2.3rem;
+  margin-bottom: 12px;
+}
+
+.section-title p {
+  color: var(--gray);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.card {
+  background: var(--white);
+  padding: 28px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.card h3 {
+  margin-bottom: 12px;
+}
+
+.card p {
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.footer {
+  background: var(--black);
+  color: var(--white);
+  padding: 32px 0;
+  text-align: center;
+  margin-top: 60px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.navbar,
+.card,
+.hero-card,
+.auth-card,
+.topbar,
+.content-card,
+.admin-topbar,
+.admin-section,
+.admin-card,
+.stat-card,
+.modal-box {
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.card p,
+.hero-text p,
+.section-title p,
+.topbar p,
+.admin-topbar p,
+.auth-subtitle,
+.content-card p {
+  color: var(--text-muted);
+}
+
+.metric,
+.plan-item,
+.history-item {
+  background: var(--bg);
+}
+
+input,
+select {
+  background: var(--card-bg);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--green);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--green-dark);
+}
+
+.btn,
+.card,
+.admin-card,
+.metric,
+.plan-item,
+.history-item {
+  transition: var(--transition);
+}
+
+.card:hover,
+.admin-card:hover {
+  transform: translateY(-4px);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}

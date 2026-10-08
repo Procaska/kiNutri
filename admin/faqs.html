@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FAQs Admin | KiNutri</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+
+<body onload="protegerRota('admin')">
+
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+
+      <a href="admin.html" class="admin-logo">
+        KiNutri Admin
+      </a>
+
+      <nav class="admin-menu">
+        <a href="admin.html">Dashboard</a>
+        <a href="usuarios.html">Usuários</a>
+        <a href="planos.html">Planos</a>
+        <a href="alimentos.html">Alimentos</a>
+        <a href="faqs.html" class="active">FAQs</a>
+
+        <button class="theme-toggle" onclick="toggleTheme()">
+          🌙 Modo escuro
+        </button>
+
+        <button onclick="logout()">
+          Sair
+        </button>
+      </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <!-- TOPBAR -->
+      <section class="admin-topbar">
+
+        <button class="admin-mobile-btn" onclick="toggleSidebar()">
+          ☰
+        </button>
+
+        <h1>FAQs Administrativas</h1>
+
+        <p>
+          Dúvidas sobre o gerenciamento do sistema.
+        </p>
+
+      </section>
+
+      <!-- FAQ GRID -->
+      <section class="admin-grid">
+
+        <div class="admin-card">
+          <span>Usuários</span>
+
+          <strong>CRUD</strong>
+
+          <p>
+            O administrador pode criar, editar, listar e excluir usuários.
+          </p>
+        </div>
+
+        <div class="admin-card">
+          <span>Planos</span>
+
+          <strong>Manual</strong>
+
+          <p>
+            O admin pode criar planos alimentares personalizados.
+          </p>
+        </div>
+
+        <div class="admin-card">
+          <span>Alimentos</span>
+
+          <strong>Base</strong>
+
+          <p>
+            O admin pode cadastrar alimentos para organizar o sistema.
+          </p>
+        </div>
+
+        <div class="admin-card">
+          <span>Exportação</span>
+
+          <strong>JSON</strong>
+
+          <p>
+            Os dados do sistema podem ser exportados em formato JSON.
+          </p>
+        </div>
+
+        <div class="admin-card">
+          <span>Dark Mode</span>
+
+          <strong>UI</strong>
+
+          <p>
+            O sistema possui alternância entre modo claro e escuro.
+          </p>
+        </div>
+
+        <div class="admin-card">
+          <span>Notificações</span>
+
+          <strong>Realtime</strong>
+
+          <p>
+            A área admin exibe notificações de atividades recentes.
+          </p>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/menu.js"></script>
+
+</body>
+</html>

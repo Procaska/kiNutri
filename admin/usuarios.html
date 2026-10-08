@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Usuários | KiNutri Admin</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+
+<body onload="protegerRota('admin')">
+  <div class="admin-layout">
+
+    <aside class="admin-sidebar">
+
+      <a href="admin.html" class="admin-logo">
+        KiNutri Admin
+      </a>
+
+      <nav class="admin-menu">
+        <a href="admin.html">Dashboard</a>
+        <a href="usuarios.html" class="active">Usuários</a>
+        <a href="planos.html"> Planos </a>
+        <a href="alimentos.html"> Alimentos </a>
+        <a href="faqs.html"> FAQs </a>
+
+        <button
+          class="theme-toggle"
+          onclick="toggleTheme()" >
+          🌙 Modo escuro
+        </button>
+
+        <button onclick="logout()">
+          Sair
+        </button>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <section class="admin-topbar">
+
+        <h1>Gerenciar Usuários</h1>
+
+        <p>
+          Cadastre, edite e exclua usuários do sistema.
+        </p>
+      </section>
+
+      <section class="admin-section">
+        <form
+          id="userForm"
+          class="admin-form">
+
+          <input
+            type="text"
+            id="userNome"
+            placeholder="Nome"
+            required >
+
+          <input
+            type="email"
+            id="userEmail"
+            placeholder="E-mail"
+            required >
+
+          <input
+            type="password"
+            id="userSenha"
+            placeholder="Senha"
+            required >
+
+          <select id="userTipo" required>
+            <option value="">
+              Tipo
+            </option>
+
+            <option value="usuario">
+              Usuário comum
+            </option>
+
+            <option value="admin">
+              Nutricionista/Admin
+            </option>
+          </select>
+
+
+          <button
+            class="btn btn-primary"
+            type="submit"
+          >
+            Criar usuário
+          </button>
+        </form>
+
+        <input
+          type="text"
+          id="searchUsuarios"
+          placeholder="Pesquisar usuários..."
+          class="search-input"
+        >
+        <div class="table-wrapper">
+
+          <table class="admin-table">
+
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Tipo</th>
+                <th>Dietas</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+
+            <tbody id="usuariosTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/admin.js"></script>
+<script src="../assets/js/notificacoes.js"></script>
+<script src="../assets/js/usuarios.js"></script>
+</body>
+</html>

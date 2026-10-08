@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico | KiNutri</title>
+  
+  <script src="../assets/js/theme.js"></script>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body onload="protegerRota('usuario')">
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="dashboard.html" class="sidebar-logo">KiNutri</a>
+
+      <nav class="sidebar-menu">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="meu-plano.html">Meu Plano</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="historico.html" class="active">Histórico</a>
+        <button onclick="logout()">Sair</button>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="topbar">
+        <h1>Histórico</h1>
+        <p>Acompanhe seus registros nutricionais.</p>
+      </section>
+
+      <section class="content-card">
+        <h2>Registros</h2>
+        <div id="listaHistorico"></div>
+      </section>
+    </main>
+  </div>
+
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/historico.js"></script>
+
+</body>
+</html>

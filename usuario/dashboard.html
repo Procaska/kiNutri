@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | KiNutri</title>
+  <script src="../assets/js/theme.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body onload="protegerRota('usuario')">
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="dashboard.html" class="sidebar-logo">KiNutri</a>
+
+      <nav class="sidebar-menu">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="meu-plano.html">Meu Plano</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="historico.html">Histórico</a>
+        <button onclick="logout()">Sair</button>
+      </nav>
+    </aside>
+
+<main class="main-content">     
+  <section class="topbar">
+    <h1>Olá, <span id="nomeUsuario">usuário</span> 👋</h1>
+    <p>Confira seu resumo nutricional de hoje.</p>
+  </section>
+
+  <div id="dashboardLoading" class="loading-state">
+    Carregando seu plano...
+  </div>
+
+  <div id="dashboardError" class="error-state" style="display: none;">
+    Não foi possível carregar seu plano.
+  </div>
+
+  <section class="dashboard-grid">
+        <div class="stat-card">
+          <span>Calorias</span>
+          <strong id="calorias">0 kcal</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Proteínas</span>
+          <strong id="proteina">0g</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Carboidratos</span>
+          <strong id="carbo">0g</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Gorduras</span>
+          <strong id="gordura">0g</strong>
+        </div>
+      </section>
+
+      <section class="content-card">
+         <h2>Distribuição de macronutrientes</h2>
+         <canvas id="macroChart"></canvas>
+      </section>
+
+      <section class="content-card">
+        <h2>Plano alimentar automático</h2>
+        <p>
+          Seu plano foi gerado automaticamente com base no seu peso cadastrado.
+        </p>
+      </section>
+    </main>
+  </div>
+
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+</body>
+</html>

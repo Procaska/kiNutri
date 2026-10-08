@@ -1,0 +1,44 @@
+:root {
+  /* PRIMARY COLORS */
+  --green: #22C55E;
+  --green-dark: #15803D;
+
+  /*BACKGROUND COLORS*/
+  --bg: #F3F4F6;
+  --white: #FFFFFF;
+  --card-bg: #FFFFFF;
+
+  /* TEXT COLORS*/
+  --black: #111827;
+  --text: #111827;
+  --gray: #6B7280;
+  --text-muted: #6B7280;
+
+  --gray-light: #E5E7EB;
+  --border: #E5E7EB;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.08);
+  --transition: 0.3s ease;
+
+}
+body.dark {
+/* BACKGROUND COLORS*/
+  --bg: #0F172A;
+  --white: #1E293B;
+  --card-bg: #1E293B;
+
+  /* TEXT COLORS*/
+  --black: #F9FAFB;
+  --text: #F9FAFB;
+  --gray: #CBD5E1;
+  --text-muted: #CBD5E1;
+
+  /*  BORDER / UI COLORS */
+  --gray-light: #334155;
+  --border: #334155;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.35);
+}

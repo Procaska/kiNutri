@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin | KiNutri</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+
+<body onload="protegerRota('admin')">
+
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+
+      <a href="admin.html" class="admin-logo">
+        KiNutri Admin
+      </a>
+
+      <nav class="admin-menu">
+        <a href="admin.html" class="active">Dashboard</a>
+        <a href="usuarios.html">Usuários</a>
+        <a href="planos.html">Planos</a>
+        <a href="alimentos.html">Alimentos</a>
+        <a href="faqs.html">FAQs</a>
+
+        <button class="theme-toggle" onclick="toggleTheme()">
+          🌙 Modo escuro
+        </button>
+
+        <button onclick="logout()">
+          Sair
+        </button>
+      </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="admin-main">
+
+      <!-- TOPBAR -->
+      <section class="admin-topbar">
+
+        <button class="admin-mobile-btn" onclick="toggleSidebar()">
+          ☰
+        </button>
+
+        <h1>Painel Administrativo</h1>
+
+        <p>
+          Gerencie usuários, planos alimentares e alimentos.
+        </p>
+
+      </section>
+
+      <!-- CARDS -->
+      <section class="admin-grid">
+
+        <div class="admin-card">
+          <span>Usuários cadastrados</span>
+
+          <strong
+            id="totalUsuarios"
+            class="skeleton skeleton-line"
+          ></strong>
+        </div>
+
+        <div class="admin-card">
+          <span>Planos criados</span>
+
+          <strong
+            id="totalPlanos"
+            class="skeleton skeleton-line"
+          ></strong>
+        </div>
+
+        <div class="admin-card">
+          <span>Alimentos cadastrados</span>
+
+          <strong
+            id="totalAlimentos"
+            class="skeleton skeleton-line"
+          ></strong>
+        </div>
+
+      </section>
+
+      <!-- GRÁFICO -->
+      <section class="admin-section" style="margin-top: 24px;">
+
+        <h2 style="margin-bottom: 20px;">
+          Resumo do sistema
+        </h2>
+
+        <canvas id="adminChart"></canvas>
+
+      </section>
+
+      <!-- EXPORTAÇÃO -->
+      <section class="admin-section" style="margin-top: 24px;">
+
+        <h2 style="margin-bottom: 20px;">
+          Exportar dados
+        </h2>
+
+        <div class="export-grid">
+
+          <button
+            class="btn btn-primary"
+            onclick="exportarUsuarios()"
+          >
+            Exportar usuários
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="exportarPlanos()"
+          >
+            Exportar planos
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="exportarAlimentos()"
+          >
+            Exportar alimentos
+          </button>
+
+          <button
+            class="btn btn-outline"
+            onclick="exportarBackupCompleto()"
+          >
+            Backup completo
+          </button>
+
+        </div>
+
+      </section>
+
+      <!-- NOTIFICAÇÕES -->
+      <section class="admin-section" style="margin-top: 24px;">
+
+        <h2 style="margin-bottom: 20px;">
+          Notificações
+
+          <span
+            id="contadorNotificacoes"
+            class="notification-badge"
+          >
+            0
+          </span>
+        </h2>
+
+        <div id="listaNotificacoes"></div>
+
+        <button
+          class="btn btn-outline"
+          style="margin-top: 18px;"
+          onclick="marcarNotificacoesComoLidas()"
+        >
+          Marcar como lidas
+        </button>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- SCRIPTS -->
+
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/menu.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="../assets/js/admin.js"></script>
+  <script src="../assets/js/export.js"></script>
+  <script src="../assets/js/notificacoes.js"></script>
+
+</body>
+</html>

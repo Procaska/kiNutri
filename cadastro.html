@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar conta | KiNutri</title>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <a href="index.html" class="auth-logo">KiNutri</a>
+      <p class="auth-subtitle">Crie sua conta gratuitamente</p>
+      
+      <form id="cadastroForm">
+        <div class="form-group">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" placeholder="Seu nome" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seuemail@gmail.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" placeholder="Mínimo 6 caracteres" required>
+        </div>
+
+        <div class="form-group">
+          <label for="tipo">Tipo de usuário</label>
+          <select id="tipo" required>
+            <option value="">Selecione</option>
+            <option value="usuario">Usuário comum</option>
+            <option value="admin">Nutricionista / Administrador</option>
+          </select>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary" id="cadastroBtn">
+          Criar conta
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Já tem conta?
+        <a href="login.html">Entrar</a>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+
+<script src="assets/js/storage.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/theme.js"></script>
+
+</body>
+</html>

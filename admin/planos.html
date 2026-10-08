@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Planos | KiNutri Admin</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+
+<body onload="protegerRota('admin')">
+
+  <div class="admin-layout">
+
+    <aside class="admin-sidebar">
+
+      <a href="admin.html" class="admin-logo">
+        KiNutri Admin
+      </a>
+
+      <nav class="admin-menu">
+        <a href="admin.html">Dashboard</a>
+        <a href="usuarios.html">Usuários</a>
+        <a href="planos.html" class="active">Planos</a>
+        <a href="alimentos.html">Alimentos</a>
+        <a href="faqs.html">FAQs</a>
+
+        <button class="theme-toggle" onclick="toggleTheme()">
+          🌙 Modo escuro
+        </button>
+
+        <button onclick="logout()">
+          Sair
+        </button>
+      </nav>
+
+    </aside>
+
+    <main class="admin-main">
+
+      <section class="admin-topbar">
+
+        <h1>Gerenciar Planos</h1>
+
+        <p>
+          Crie e organize planos alimentares manuais.
+        </p>
+
+      </section>
+
+      <section class="admin-section">
+
+        <form id="planoForm" class="admin-form">
+  <select id="planoUsuario" required>
+    <option value="">Selecione o paciente</option>
+  </select>
+
+  <input
+    type="text"
+    id="planoNome"
+    placeholder="Nome da dieta"
+    required
+  >
+
+  <input
+    type="number"
+    id="planoCalorias"
+    placeholder="Calorias"
+    required
+  >
+
+  <input
+    type="number"
+    id="planoProteina"
+    placeholder="Proteínas"
+    required
+  >
+
+  <input
+    type="number"
+    id="planoCarbo"
+    placeholder="Carboidratos"
+    required
+  >
+
+  <input
+    type="number"
+    id="planoGordura"
+    placeholder="Gorduras"
+    required
+  >
+
+  <button class="btn btn-primary" type="submit">
+    Criar dieta
+  </button>
+</form>
+
+        <input
+          type="text"
+          id="searchPlanos"
+          placeholder="Pesquisar planos..."
+          class="search-input"
+        >
+
+        <div class="table-wrapper">
+
+          <table class="admin-table">
+
+            <thead>
+              <tr>
+                <th>Plano</th>
+                <th>Calorias</th>
+                <th>Proteína</th>
+                <th>Carbo</th>
+                <th>Gordura</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+
+            <tbody id="planosTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/notificacoes.js"></script>
+<script src="../assets/js/planos.js?v=2"></script>
+
+</body>
+</html>

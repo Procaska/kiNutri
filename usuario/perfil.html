@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil | KiNutri</title>
+  <script src="../assets/js/theme.js"></script>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body onload="protegerRota('usuario')">
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="dashboard.html" class="sidebar-logo">KiNutri</a>
+
+      <nav class="sidebar-menu">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="meu-plano.html">Meu Plano</a>
+        <a href="perfil.html" class="active">Perfil</a>
+        <a href="historico.html">Histórico</a>
+        <button onclick="logout()">Sair</button>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="topbar">
+        <h1>Perfil</h1>
+        <p>Atualize seus dados pessoais.</p>
+      </section>
+
+      <section class="content-card">
+
+        <div id="perfilLoading" class="loading-state" style="display: none;">
+            Carregando perfil...
+       </div>
+
+
+       <div id="perfilError" class="error-state" style="display: none;">
+        Não foi possível carregar o perfil.
+      </div>
+
+
+        <form id="perfilForm" class="profile-form">
+          <div class="form-group">
+          <label>Nome</label>
+          <input type="text" id="perfilNome" readonly>
+        </div>
+
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="perfilEmail" readonly>
+        </div>
+
+        <div class="form-group">
+          <label>Data de nascimento</label>
+          <input type="date" id="perfilNascimento" required>
+        </div>
+
+        <div class="form-group">
+          <label>Sexo</label>
+          <select id="perfilGenero" required>
+            <option value="">Selecione</option>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Peso em kg</label>
+          <input type="number" id="perfilPeso" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+          <label>Altura em cm</label>
+          <input type="number" id="perfilAltura" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+          <label>Nível de atividade</label>
+          <select id="perfilAtividade" required>
+            <option value="">Selecione</option>
+            <option value="sedentario">Sedentário</option>
+            <option value="leve">Leve</option>
+            <option value="moderado">Moderado</option>
+            <option value="intenso">Intenso</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Objetivo</label>
+          <select id="perfilObjetivo" required>
+            <option value="">Selecione</option>
+            <option value="Emagrecimento">Emagrecimento</option>
+            <option value="Manutenção">Manutenção</option>
+            <option value="Ganho de Massa">Ganho de Massa</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" type="submit">Salvar alterações</button>
+</div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+<script src="../assets/js/storage.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/perfil.js"></script>
+</body>
+</html>
