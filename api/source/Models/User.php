@@ -19,6 +19,8 @@ class User
         $stmt = $this->db->query("
             SELECT 
                 users.id,
+                users.typeId,
+                users.typeId,
                 users.name,
                 users.email,
                 users.photo,
@@ -35,6 +37,8 @@ class User
         $stmt = $this->db->prepare("
             SELECT 
                 users.id,
+                users.typeId,
+                users.typeId,
                 users.name,
                 users.email,
                 users.photo,
@@ -71,7 +75,7 @@ class User
         ");
 
         $typeId = $data["typeId"] ?? 2;
-        $photo = $data["photo"] ?? null;
+        $photo = null;
 
         $stmt->bindParam(":typeId", $typeId);
         $stmt->bindParam(":name", $data["name"]);
@@ -80,5 +84,34 @@ class User
         $stmt->bindParam(":photo", $photo);
 
         return $stmt->execute();
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        $stmt = $this->db->prepare("UPDATE users SET name = :name, email = :email,
+            typeId = :typeId WHERE id = :id");
+        return $stmt->execute([
+            "id" => $id, "name" => $data["name"], "email" => $data["email"],
+            "typeId" => $data["typeId"]
+        ]);
+    }
+
+    public function lockPhoto(int $id): ?object
+    {
+        $stmt = $this->db->prepare('SELECT id, photo FROM users WHERE id = ? FOR UPDATE');
+        $stmt->execute([$id]);
+        return $stmt->fetch() ?: null;
+    }
+
+    public function updatePhoto(int $id, string $path): void
+    {
+        $this->db->prepare('UPDATE users SET photo = ? WHERE id = ?')->execute([$path, $id]);
+    }
+
+    public function delete(int $id): bool
+    {
+        // As FKs existentes removem o perfil e preservam as dietas (user_id NULL).
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
+        return $stmt->execute(["id" => $id]);
     }
 }

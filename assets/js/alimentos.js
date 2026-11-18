@@ -26,7 +26,7 @@ async function listarAlimentos() {
   `;
 
   try {
-    const result = await api.get("/alimentos");
+    const result = await foodService.list();
 
     if (result.status !== "success") {
       tbody.innerHTML = `
@@ -63,11 +63,12 @@ async function listarAlimentos() {
     // Estado de sucesso
     tbody.innerHTML = alimentos.map(alimento => `
       <tr>
-        <td>${alimento.name}</td>
-        <td>${alimento.category}</td>
+        <td>${escapeHTML(alimento.name)}</td>
+        <td>${escapeHTML(alimento.category)}</td>
         <td>${alimento.calories} kcal</td>
         <td>${alimento.protein}g</td>
         <td>
+          <button type="button" class="action-btn edit-btn" data-gallery-id="${alimento.id}">Imagens</button>
           <button
             class="action-btn edit-btn"
             onclick="abrirModalEditarAlimento(${alimento.id})"
@@ -107,23 +108,20 @@ async function listarAlimentos() {
 
 async function criarAlimento(event) {
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
-  const nome = document
-    .getElementById("alimentoNome")
-    .value
-    .trim();
+  const nome = fields.alimentoNome;
 
-  const categoria = document
-    .getElementById("alimentoCategoria")
-    .value
-    .trim();
+  const categoria = fields.alimentoCategoria;
 
   const calorias = Number(
-    document.getElementById("alimentoCalorias").value
+    fields.alimentoCalorias
   );
 
   const proteina = Number(
-    document.getElementById("alimentoProteina").value
+    fields.alimentoProteina
   ) || 0;
 
   if (!nome || !categoria || !calorias) {
@@ -134,8 +132,9 @@ async function criarAlimento(event) {
     return;
   }
 
+  formController.setLoading(true);
   try {
-    const result = await api.post("/alimentos", {
+    const result = await foodService.create({
       category_id: getCategoryId(categoria),
       name: nome,
       calories: calorias,
@@ -150,7 +149,7 @@ async function criarAlimento(event) {
       return;
     }
 
-    event.target.reset();
+    formController.reset();
 
     await listarAlimentos();
 
@@ -174,41 +173,18 @@ async function criarAlimento(event) {
       error.message || "Erro ao conectar com a API.",
       "error"
     );
+  } finally {
+    formController.setLoading(false);
   }
 }
 
 async function buscarAlimentoPorId(id) {
   try {
-    const result = await api.get(`/alimentos/${id}`);
-
-    if (result.status === "success" && result.data) {
-      return result.data;
-    }
-
-    return null;
-
+    const result = await foodService.find(id);
+    return result.status === "success" ? result.data : null;
   } catch (error) {
-    console.error(error);
-
-    /*
-     * Caso o backend ainda não possua GET /alimentos/{id},
-     * usamos a listagem como fallback.
-     */
-    try {
-      const result = await api.get("/alimentos");
-
-      if (result.status !== "success") {
-        return null;
-      }
-
-      return result.data.find(
-        alimento => Number(alimento.id) === Number(id)
-      ) || null;
-
-    } catch (fallbackError) {
-      console.error(fallbackError);
-      return null;
-    }
+    showToast(error.message, "error");
+    return null;
   }
 }
 
@@ -284,23 +260,20 @@ async function abrirModalEditarAlimento(id) {
 
 async function salvarEdicaoAlimento(event, id) {
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
-  const nome = document
-    .getElementById("editAlimentoNome")
-    .value
-    .trim();
+  const nome = fields.editAlimentoNome;
 
-  const categoria = document
-    .getElementById("editAlimentoCategoria")
-    .value
-    .trim();
+  const categoria = fields.editAlimentoCategoria;
 
   const calorias = Number(
-    document.getElementById("editAlimentoCalorias").value
+    fields.editAlimentoCalorias
   );
 
   const proteina = Number(
-    document.getElementById("editAlimentoProteina").value
+    fields.editAlimentoProteina
   ) || 0;
 
   if (!nome || !categoria || !calorias) {
@@ -311,9 +284,9 @@ async function salvarEdicaoAlimento(event, id) {
     return;
   }
 
+  formController.setLoading(true);
   try {
-    const result = await api.put(
-      `/alimentos/${id}`,
+    const result = await foodService.update(id,
       {
         category_id: getCategoryId(categoria),
         name: nome,
@@ -346,6 +319,8 @@ async function salvarEdicaoAlimento(event, id) {
       error.message || "Erro ao conectar com a API.",
       "error"
     );
+  } finally {
+    formController.setLoading(false);
   }
 }
 
@@ -355,8 +330,7 @@ function excluirAlimento(id) {
     async () => {
 
       try {
-        const result = await api.delete(
-          `/alimentos/${id}`
+        const result = await foodService.remove(id
         );
 
         if (result.status !== "success") {

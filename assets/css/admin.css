@@ -416,3 +416,4 @@
   margin-bottom: 8px;
   color: var(--text);
 }
+.toast.warning { background: #eab308; color: #422006; }

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alimentos | KiNutri Admin</title>
+  <link rel="stylesheet" href="../assets/css/images.css">
 
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/admin.css">
@@ -84,12 +85,46 @@
     </main>
   </div>
 
+<dialog id="foodGallery" aria-labelledby="foodGalleryTitle" class="image-dialog image-panel">
+  <header>
+    <h2 id="foodGalleryTitle">Galeria de imagens</h2>
+    <button id="foodGalleryClose" type="button" class="btn btn-outline">Fechar</button>
+  </header>
+  <form enctype="multipart/form-data">
+    <label for="foodImageFile">Selecionar imagem</label>
+    <input id="foodImageFile" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>
+    <small>JPEG, PNG ou WebP, até 5 MiB. Envie uma imagem por vez.</small>
+    <label for="foodImageAlt">Texto alternativo (opcional)</label>
+    <input id="foodImageAlt" name="alt_text" type="text" maxlength="255" placeholder="Ex.: fatias de maçã vermelha">
+    <img id="foodImagePreview" class="image-preview" alt="Prévia da imagem selecionada" hidden>
+    <button type="submit" class="btn btn-primary">Adicionar imagem</button>
+  </form>
+  <p id="foodGalleryStatus" class="image-status" role="status"></p>
+  <button id="foodGalleryRetry" class="btn btn-outline" type="button" hidden>Tentar carregar novamente</button>
+  <div id="foodGalleryItems" class="image-gallery"></div>
+</dialog>
+
 <script src="../assets/js/storage.js"></script>
+<script src="../assets/js/common/classes/EntityValidation.js"></script>
+<script src="../assets/js/common/classes/User.js"></script>
+<script src="../assets/js/common/classes/Food.js"></script>
+<script src="../assets/js/common/classes/UserProfile.js"></script>
+<script src="../assets/js/common/classes/DietFood.js"></script>
+<script src="../assets/js/common/classes/Diet.js"></script>
+<script src="../assets/js/common/classes/HttpClientBase.js"></script>
+<script src="../assets/js/common/services/UserService.js"></script>
+<script src="../assets/js/common/services/FoodService.js"></script>
+<script src="../assets/js/common/services/DietService.js"></script>
+<script src="../assets/js/common/prototypes/ToastPrototype.js"></script>
+<script src="../assets/js/common/prototypes/FormControllerPrototype.js"></script>
 <script src="../assets/js/api.js"></script>
 <script src="../assets/js/theme.js"></script>
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/ui.js"></script>
 <script src="../assets/js/notificacoes.js"></script>
 <script src="../assets/js/alimentos.js"></script>
+<script src="../assets/js/common/services/ImageService.js"></script>
+<script src="../assets/js/image-form.js"></script>
+<script src="../assets/js/food-gallery.js"></script>
 </body>
 </html>

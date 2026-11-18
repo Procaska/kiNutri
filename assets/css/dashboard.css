@@ -314,3 +314,8 @@
   font-size: 18px;
   color: var(--text);
 }
+.toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 22px; border-radius: 10px; display: none; z-index: 9999; color: white; }
+.toast.show { display: block; }
+.toast.success { background: #22c55e; }
+.toast.warning { background: #eab308; color: #422006; }
+.toast.error { background: #ef4444; }

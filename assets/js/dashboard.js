@@ -28,7 +28,7 @@ async function carregarDashboard() {
   }
 
   try {
-    const result = await api.get(`/usuarios/${user.id}/dietas`);
+    const result = await dietService.listByUser(user.id);
 
     if (result.status !== "success") {
       throw new Error(

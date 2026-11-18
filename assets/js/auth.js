@@ -1,13 +1,3 @@
-const USERS_KEY = "kinutri_users";
-
-function getUsers() {
-  return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-}
-
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
 function setSession(user) {
   const token = storage.getToken();
 
@@ -24,21 +14,6 @@ function clearSession() {
   storage.clearSession();
 }
 
-function showToast(message, type = "success") {
-  const toast = document.getElementById("toast");
-
-  if (!toast) {
-    alert(message);
-    return;
-  }
-
-  toast.textContent = message;
-  toast.className = `toast show ${type}`;
-
-  setTimeout(() => {
-    toast.className = "toast";
-  }, 3000);
-}
 
 function setLoading(
   button,
@@ -50,9 +25,11 @@ function setLoading(
 
   if (isLoading) {
     button.classList.add("loading");
+    button.disabled = true;
     button.textContent = textLoading;
   } else {
     button.classList.remove("loading");
+    button.disabled = false;
     button.textContent = textDefault;
   }
 }
@@ -75,18 +52,18 @@ function redirectByUserTypeFromSubfolder(user) {
 
 async function cadastroUsuario(event) {
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
   const btn = document.getElementById("cadastroBtn");
 
-  const nome = document.getElementById("nome").value.trim();
-  const email = document
-    .getElementById("email")
-    .value
-    .trim()
+  const nome = fields.nome;
+  const email = fields.email
     .toLowerCase();
 
-  const senha = document.getElementById("senha").value.trim();
-  const tipo = document.getElementById("tipo").value;
+  const senha = fields.senha;
+  const tipo = fields.tipo;
 
   if (!nome || !email || !senha || !tipo) {
     showToast(
@@ -112,12 +89,11 @@ async function cadastroUsuario(event) {
   );
 
   try {
-    const result = await api.post("/usuarios", {
+    const result = await userService.create({
       name: nome,
       email: email,
-      password: senha,
       typeId: tipo === "admin" ? 1 : 2
-    });
+    }, senha);
 
     if (result.status !== "success") {
       showToast(
@@ -154,19 +130,16 @@ async function cadastroUsuario(event) {
 
 async function loginUsuario(event) {
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
   const btn = document.getElementById("loginBtn");
 
-  const email = document
-    .getElementById("loginEmail")
-    .value
-    .trim()
+  const email = fields.loginEmail
     .toLowerCase();
 
-  const senha = document
-    .getElementById("loginSenha")
-    .value
-    .trim();
+  const senha = fields.loginSenha;
 
   if (!email || !senha) {
     showToast(
@@ -184,7 +157,7 @@ async function loginUsuario(event) {
   );
 
   try {
-    const result = await api.post("/login", {
+    const result = await userService.login({
       email: email,
       password: senha
     });

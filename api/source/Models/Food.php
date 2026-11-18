@@ -92,6 +92,13 @@ class Food
         return $stmt->execute();
     }
 
+    public function lock(int $id): bool
+    {
+        $stmt = $this->db->prepare('SELECT id FROM foods WHERE id = ? FOR UPDATE');
+        $stmt->execute([$id]);
+        return $stmt->fetchColumn() !== false;
+    }
+
     public function delete(int $id): bool
     {
         $stmt = $this->db->prepare("

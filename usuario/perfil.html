@@ -7,6 +7,7 @@
   <script src="../assets/js/theme.js"></script>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/images.css">
 </head>
 <body onload="protegerRota('usuario')">
 
@@ -27,6 +28,19 @@
       <section class="topbar">
         <h1>Perfil</h1>
         <p>Atualize seus dados pessoais.</p>
+      </section>
+
+      <section class="content-card image-panel" aria-labelledby="profilePhotoTitle">
+        <h2 id="profilePhotoTitle">Foto de perfil</h2>
+        <img id="currentProfilePhoto" class="profile-photo" alt="Foto atual do perfil" hidden>
+        <form id="profilePhotoForm" enctype="multipart/form-data">
+          <label for="profilePhotoFile">Selecionar nova foto</label>
+          <input id="profilePhotoFile" name="photo" type="file" accept="image/jpeg,image/png,image/webp" required>
+          <small>JPEG, PNG ou WebP, até 5 MiB.</small>
+          <img id="profilePhotoPreview" class="profile-photo" alt="Prévia da nova foto" hidden>
+          <button type="submit" class="btn btn-primary">Enviar foto</button>
+        </form>
+        <p id="profilePhotoStatus" class="image-status" role="status"></p>
       </section>
 
       <section class="content-card">
@@ -107,8 +121,23 @@
   </div>
 
 <script src="../assets/js/storage.js"></script>
+<script src="../assets/js/common/classes/EntityValidation.js"></script>
+<script src="../assets/js/common/classes/User.js"></script>
+<script src="../assets/js/common/classes/Food.js"></script>
+<script src="../assets/js/common/classes/UserProfile.js"></script>
+<script src="../assets/js/common/classes/DietFood.js"></script>
+<script src="../assets/js/common/classes/Diet.js"></script>
+<script src="../assets/js/common/classes/HttpClientBase.js"></script>
+<script src="../assets/js/common/services/UserService.js"></script>
+<script src="../assets/js/common/services/FoodService.js"></script>
+<script src="../assets/js/common/services/DietService.js"></script>
+<script src="../assets/js/common/prototypes/ToastPrototype.js"></script>
+<script src="../assets/js/common/prototypes/FormControllerPrototype.js"></script>
 <script src="../assets/js/api.js"></script>
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/perfil.js"></script>
+<script src="../assets/js/common/services/ImageService.js"></script>
+<script src="../assets/js/image-form.js"></script>
+<script src="../assets/js/profile-photo.js"></script>
 </body>
 </html>

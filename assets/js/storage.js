@@ -20,7 +20,7 @@
   getUser() {
     const user = localStorage.getItem(this.#userKey);
 
-    return user ? JSON.parse(user) : null;
+    return user ? User.fromJSON(JSON.parse(user)) : null;
   }
 
   clearSession() {

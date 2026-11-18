@@ -4,7 +4,7 @@ async function carregarUsuariosNoSelect() {
   if (!select) return;
 
   try {
-    const result = await api.get("/usuarios");
+    const result = await userService.list();
 
     if (result.status !== "success") {
       showToast(
@@ -54,7 +54,7 @@ async function listarPlanos() {
   `;
 
   try {
-    const result = await api.get("/dietas");
+    const result = await dietService.list();
 
     if (result.status !== "success") {
       tbody.innerHTML = `
@@ -145,27 +145,27 @@ async function listarPlanos() {
 
 async function criarPlano(event) {
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
   const userId = Number(
-    document.getElementById("planoUsuario").value
+    fields.planoUsuario
   );
 
-  const nome = document
-    .getElementById("planoNome")
-    .value
-    .trim();
+  const nome = fields.planoNome;
 
   const calorias =
-    Number(document.getElementById("planoCalorias").value) || 0;
+    Number(fields.planoCalorias) || 0;
 
   const proteina =
-    Number(document.getElementById("planoProteina").value) || 0;
+    Number(fields.planoProteina) || 0;
 
   const carbo =
-    Number(document.getElementById("planoCarbo").value) || 0;
+    Number(fields.planoCarbo) || 0;
 
   const gordura =
-    Number(document.getElementById("planoGordura").value) || 0;
+    Number(fields.planoGordura) || 0;
 
 
   if (!userId || !nome) {
@@ -177,8 +177,9 @@ async function criarPlano(event) {
   }
 
 
+  formController.setLoading(true);
   try {
-    const result = await api.post("/dietas", {
+    const result = await dietService.create({
       user_id: userId,
       name: nome,
       goal: "Não definido",
@@ -198,7 +199,7 @@ async function criarPlano(event) {
     }
 
 
-    event.target.reset();
+    formController.reset();
 
     await carregarUsuariosNoSelect();
     await listarPlanos();
@@ -215,13 +216,15 @@ async function criarPlano(event) {
       error.message || "Erro ao conectar com a API.",
       "error"
     );
+  } finally {
+    formController.setLoading(false);
   }
 }
 
 
 async function buscarPlanoPorId(id) {
   try {
-    const result = await api.get(`/dietas/${id}`);
+    const result = await dietService.find(id);
 
     return result.status === "success"
       ? result.data
@@ -317,38 +320,38 @@ async function abrirModalEditarPlano(id) {
 
 async function salvarEdicaoPlano(event, id) {
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
   const dietaAtual = await buscarPlanoPorId(id);
 
-  const nome = document
-    .getElementById("editPlanoNome")
-    .value
-    .trim();
+  const nome = fields.editPlanoNome;
 
   const calorias =
     Number(
-      document.getElementById("editPlanoCalorias").value
+      fields.editPlanoCalorias
     ) || 0;
 
   const proteina =
     Number(
-      document.getElementById("editPlanoProteina").value
+      fields.editPlanoProteina
     ) || 0;
 
   const carbo =
     Number(
-      document.getElementById("editPlanoCarbo").value
+      fields.editPlanoCarbo
     ) || 0;
 
   const gordura =
     Number(
-      document.getElementById("editPlanoGordura").value
+      fields.editPlanoGordura
     ) || 0;
 
 
+  formController.setLoading(true);
   try {
-    const result = await api.put(
-      `/dietas/${id}`,
+    const result = await dietService.update(id,
       {
         user_id: dietaAtual?.user_id || null,
         name: nome,
@@ -386,6 +389,8 @@ async function salvarEdicaoPlano(event, id) {
       error.message || "Erro ao conectar com a API.",
       "error"
     );
+  } finally {
+    formController.setLoading(false);
   }
 }
 
@@ -396,8 +401,7 @@ function excluirPlano(id) {
     async () => {
 
       try {
-        const result = await api.delete(
-          `/dietas/${id}`
+        const result = await dietService.remove(id
         );
 
 
@@ -433,7 +437,7 @@ function excluirPlano(id) {
 
 async function buscarAlimentos() {
   try {
-    const result = await api.get("/alimentos");
+    const result = await foodService.list();
 
     return result.status === "success"
       ? result.data
@@ -449,9 +453,7 @@ async function buscarAlimentos() {
 
 async function buscarAlimentosDaDieta(dietaId) {
   try {
-    const result = await api.get(
-      `/dietas/${dietaId}/alimentos`
-    );
+    const result = await dietService.listFoods(dietaId);
 
     return result.status === "success"
       ? result.data
@@ -623,18 +625,21 @@ async function adicionarAlimentoDieta(
 ) {
 
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
 
   const foodId = Number(
-    document.getElementById("dietFoodId").value
+    fields.dietFoodId
   );
 
   const meal =
-    document.getElementById("dietMeal").value;
+    fields.dietMeal;
 
   const quantity =
     Number(
-      document.getElementById("dietQuantity").value
+      fields.dietQuantity
     );
 
 
@@ -647,10 +652,10 @@ async function adicionarAlimentoDieta(
   }
 
 
+  formController.setLoading(true);
   try {
 
-    const result = await api.post(
-      `/dietas/${dietaId}/alimentos`,
+    const result = await dietService.addFood(dietaId,
       {
         food_id: foodId,
         meal: meal,
@@ -693,6 +698,8 @@ async function adicionarAlimentoDieta(
       "Erro ao conectar com a API.",
       "error"
     );
+  } finally {
+    formController.setLoading(false);
   }
 }
 
@@ -705,8 +712,7 @@ async function removerAlimentoDieta(
 
   try {
 
-    const result = await api.delete(
-      `/dietas/alimentos/${id}`
+    const result = await dietService.removeFood(id
     );
 
 

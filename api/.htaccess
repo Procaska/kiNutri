@@ -1,5 +1,13 @@
 RewriteEngine On
 
+<IfModule php_module>
+    php_value upload_max_filesize 5M
+    php_value post_max_size 6M
+    php_flag display_errors Off
+</IfModule>
+
+RewriteRule ^uploads(?:/|$) - [L]
+
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 

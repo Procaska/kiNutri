@@ -107,3 +107,4 @@ button.loading {
   opacity: 0.75;
   pointer-events: none;
 }
+.toast.warning { background: #eab308; color: #422006; }

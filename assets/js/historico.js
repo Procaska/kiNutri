@@ -13,10 +13,11 @@ async function carregarHistorico() {
   `;
 
   try {
-    const result = await api.get(`/usuarios/${user.id}/dietas`);
+    const result = await dietService.listByUser(user.id);
+
+    if (result.status !== "success") throw new Error(result.message || "Não foi possível carregar as dietas.");
 
     if (
-      result.status !== "success" ||
       !result.data ||
       result.data.length === 0
     ) {

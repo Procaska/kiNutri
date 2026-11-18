@@ -1,0 +1,9 @@
+Options -Indexes
+<FilesMatch "^[a-f0-9]{32}\.(jpg|png|webp)$">
+    SetHandler default-handler
+</FilesMatch>
+<FilesMatch "^(?![a-f0-9]{32}\.(jpg|png|webp)$)">
+    Require all denied
+</FilesMatch>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Cache-Control "no-cache"

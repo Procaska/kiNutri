@@ -6,14 +6,14 @@ async function carregarDadosAdmin() {
   try {
     const [usuariosResult, planosResult, alimentosResult] =
       await Promise.all([
-        api.get("/usuarios"),
-        api.get("/dietas"),
-        api.get("/alimentos")
+        userService.list(),
+        dietService.list(),
+        foodService.list()
       ]);
 
-      console.log("USUÁRIOS:", usuariosResult);
-      console.log("PLANOS:", planosResult);
-      console.log("ALIMENTOS:", alimentosResult);
+    for (const result of [usuariosResult, planosResult, alimentosResult]) {
+      if (result.status !== "success") throw new Error(result.message || "Erro ao carregar o painel.");
+    }
 
     const usuarios =
       usuariosResult.status === "success"
@@ -53,6 +53,7 @@ async function carregarDadosAdmin() {
 
   } catch (error) {
     console.error("Erro ao carregar dados administrativos:", error);
+    showToast(error.message, "error");
 
     if (totalUsuarios) {
       totalUsuarios.classList.remove("skeleton", "skeleton-line");

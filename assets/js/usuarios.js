@@ -18,11 +18,10 @@ async function listarUsuarios() {
       </tr>
     `;
 
-    const result = await api.get("/usuarios");
+    const result = await userService.list();
 
     if (result.status !== "success") {
-      showToast("Erro ao carregar usuários.", "error");
-      return;
+      throw new Error(result.message || "Erro ao carregar usuários.");
     }
 
     const users = result.data || [];
@@ -58,14 +57,14 @@ async function listarUsuarios() {
         <td>
           <button
             class="action-btn edit-btn"
-            onclick="showToast('Edição de usuário será implementada depois.', 'error')"
+            onclick="abrirModalEditarUsuario(${user.id})"
           >
             Editar
           </button>
 
           <button
             class="action-btn delete-btn"
-            onclick="showToast('Exclusão de usuário será implementada depois.', 'error')"
+            onclick="excluirUsuario(${user.id})"
           >
             Excluir
           </button>
@@ -91,11 +90,14 @@ async function listarUsuarios() {
 
 async function criarUsuario(event) {
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
-  const nome = document.getElementById("userNome").value.trim();
-  const email = document.getElementById("userEmail").value.trim().toLowerCase();
-  const senha = document.getElementById("userSenha").value.trim();
-  const tipo = document.getElementById("userTipo").value;
+  const nome = fields.userNome;
+  const email = fields.userEmail.toLowerCase();
+  const senha = fields.userSenha;
+  const tipo = fields.userTipo;
 
   if (!nome || !email || !senha || !tipo) {
     showToast("Preencha todos os campos obrigatórios.", "error");
@@ -107,13 +109,13 @@ async function criarUsuario(event) {
     return;
   }
 
+  formController.setLoading(true);
   try {
-    const result = await api.post("/usuarios", {
+    const result = await userService.create({
       name: nome,
       email: email,
-      password: senha,
       typeId: tipo === "admin" ? 1 : 2
-    });
+    }, senha);
 
     if (result.status !== "success") {
       showToast(
@@ -123,7 +125,7 @@ async function criarUsuario(event) {
       return;
     }
 
-    event.target.reset();
+    formController.reset();
 
     await listarUsuarios();
 
@@ -144,15 +146,15 @@ async function criarUsuario(event) {
       error.message || "Erro ao criar usuário.",
       "error"
     );
+  } finally {
+    formController.setLoading(false);
   }
 }
 
 
 async function verDietasUsuario(userId, userName) {
   try {
-    const result = await api.get(
-      `/usuarios/${userId}/dietas`
-    );
+    const result = await dietService.listByUser(userId);
 
     if (result.status !== "success") {
       showToast(
@@ -279,3 +281,63 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+async function abrirModalEditarUsuario(id) {
+  try {
+    const result = await userService.find(id);
+    if (result.status !== "success" || !result.data) {
+      showToast(result, "error");
+      return;
+    }
+    const user = result.data;
+    openModal("Editar usuário", `
+      <form class="modal-form" onsubmit="salvarEdicaoUsuario(event, ${id})">
+        <input id="editUserNome" value="${escapeHTML(user.name)}" placeholder="Nome" required>
+        <input id="editUserEmail" type="email" value="${escapeHTML(user.email)}" placeholder="E-mail" required>
+        <select id="editUserTipo" required>
+          <option value="2" ${!user.isAdmin() ? "selected" : ""}>Usuário comum</option>
+          <option value="1" ${user.isAdmin() ? "selected" : ""}>Nutricionista/Admin</option>
+        </select>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </form>`);
+  } catch (error) { showToast(error.message, "error"); }
+}
+
+async function salvarEdicaoUsuario(event, id) {
+  event.preventDefault();
+  const form = Object.create(FormControllerPrototype).init(event.target);
+  if (!form.validate()) return;
+  const fields = form.values();
+  form.setLoading(true);
+  try {
+    const current = await userService.find(id);
+    if (current.status !== "success" || !current.data) throw new Error(current.message || "Usuário não encontrado.");
+    const user = current.data;
+    user.name = fields.editUserNome;
+    user.email = fields.editUserEmail.toLowerCase();
+    user.typeId = Number(fields.editUserTipo);
+    const result = await userService.update(id, user);
+    showToast(result);
+    if (result.status !== "success") return;
+    if (storage.getUser()?.id == id) storage.saveSession(storage.getToken(), user);
+    closeModal();
+    await listarUsuarios();
+    if (typeof criarNotificacao === "function") criarNotificacao("Usuário atualizado", `${user.name} foi atualizado.`, "success");
+  } catch (error) { showToast(error.message, "error"); }
+  finally { form.setLoading(false); }
+}
+
+function excluirUsuario(id) {
+  confirmAction("Excluir este usuário? O perfil será removido e os planos serão preservados sem paciente.", async () => {
+    try {
+      const result = await userService.remove(id);
+      showToast(result);
+      if (result.status !== "success") return;
+      await listarUsuarios();
+      if (typeof criarNotificacao === "function") criarNotificacao("Usuário removido", "Um usuário foi excluído do sistema.", "warning");
+    } catch (error) { showToast(error.message, "error"); }
+  });
+}

@@ -1,5 +1,7 @@
 # KiNutri — API REST
 
+Para foto da conta autenticada e galeria de alimentos, consulte os [contratos da Etapa 07](../README.md#contratos-da-api) e a [migração food_images](../data-base/etapa-07-imagens.sql).
+
 ## Sobre o projeto
 
 O KiNutri é um sistema web para gerenciamento nutricional.
@@ -30,6 +32,7 @@ users
 user_profiles
 food_categories
 foods
+food_images
 diets
 diet_foods
 ```
@@ -41,6 +44,7 @@ user_types 1:N users
 users 1:1 user_profiles
 users 1:N diets
 food_categories 1:N foods
+foods 1:N food_images
 diets 1:N diet_foods
 foods 1:N diet_foods
 ```
@@ -97,6 +101,8 @@ POST /api/login
 GET /api/usuarios
 GET /api/usuarios/{id}
 POST /api/usuarios
+PUT /api/usuarios/{id}
+DELETE /api/usuarios/{id}
 ```
 
 ### Perfil nutricional
@@ -108,10 +114,23 @@ POST /api/usuarios/{id}/perfil
 ### Alimentos
 ```http
 GET /api/alimentos
+GET /api/alimentos/{id}
 POST /api/alimentos
 PUT /api/alimentos/{id}
 DELETE /api/alimentos/{id}
 ```
+
+### Foto de perfil e galeria
+
+```http
+GET /api/users/photo
+POST /api/users/photo
+GET /api/alimentos/{food_id}/imagens
+POST /api/alimentos/{food_id}/imagens
+DELETE /api/alimentos/{food_id}/imagens/{image_id}
+```
+
+Todas exigem JWT. O envio de foto usa o campo multipart `photo` e afeta a própria conta. A inclusão na galeria usa `image` e, opcionalmente, `alt_text`. Somente administradores podem incluir ou remover imagens da galeria.
 
 ### Dietas
 ```http

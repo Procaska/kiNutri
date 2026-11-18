@@ -3,9 +3,23 @@
 namespace source\Controller;
 
 use source\Models\Food;
+use source\Core\Connect;
+use source\Models\FoodImage;
+use source\Support\ImageStorage;
 
 class FoodController
 {
+    public function buscarAlimento(int $id): void
+    {
+        $food = (new Food())->findById($id);
+        if (!$food) {
+            http_response_code(404);
+            echo json_encode(["status" => "error", "message" => "Alimento não encontrado."]);
+            return;
+        }
+        echo json_encode(["status" => "success", "data" => $food]);
+    }
+
     public function listarAlimentos(): void
     {
         $foodModel = new Food();
@@ -93,23 +107,24 @@ class FoodController
 
     public function excluirAlimento(int $id): void
     {
-        $foodModel = new Food();
-
-        if (!$foodModel->findById($id)) {
-            echo json_encode([
-                "status" => "error",
-                "message" => "Alimento não encontrado"
-            ]);
-            return;
+        $db = Connect::getInstance();
+        $food = new Food();
+        try {
+            $db->beginTransaction();
+            if (!$food->lock($id)) {
+                $db->rollBack();
+                ImageController::respond(404, 'Alimento não encontrado.');
+                return;
+            }
+            $images = (new FoodImage($db))->listByFood($id);
+            $food->delete($id);
+            $db->commit();
+            foreach ($images as $image) ImageStorage::remove($image->image_path);
+            ImageController::respond(200, 'Alimento excluído com sucesso!');
+        } catch (\Throwable $e) {
+            if ($db->inTransaction()) $db->rollBack();
+            error_log((string) $e);
+            ImageController::respond(500, 'Erro ao excluir alimento.');
         }
-
-        $resultado = $foodModel->delete($id);
-
-        echo json_encode([
-            "status" => $resultado ? "success" : "error",
-            "message" => $resultado
-                ? "Alimento excluído com sucesso!"
-                : "Erro ao excluir alimento"
-        ]);
     }
 }

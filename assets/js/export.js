@@ -11,33 +11,36 @@ function downloadJSON(filename, data) {
   URL.revokeObjectURL(url);
 }
 
+async function exportarDados(service, filename, message) {
+  try {
+    const result = await service.list();
+    if (result.status !== "success") throw new Error(result.message || "Erro ao exportar dados.");
+    downloadJSON(filename, result.data);
+    showToast(message);
+  } catch (error) { showToast(error.message, "error"); }
+}
+
 function exportarUsuarios() {
-  const usuarios = JSON.parse(localStorage.getItem("kinutri_users")) || [];
-  downloadJSON("kinutri-usuarios.json", usuarios);
-  showToast("Usuários exportados com sucesso!");
+  return exportarDados(userService, "kinutri-usuarios.json", "Usuários exportados com sucesso!");
 }
 
 function exportarPlanos() {
-  const planos = JSON.parse(localStorage.getItem("kinutri_planos")) || [];
-  downloadJSON("kinutri-planos.json", planos);
-  showToast("Planos exportados com sucesso!");
+  return exportarDados(dietService, "kinutri-planos.json", "Planos exportados com sucesso!");
 }
 
 function exportarAlimentos() {
-  const alimentos = JSON.parse(localStorage.getItem("kinutri_alimentos")) || [];
-  downloadJSON("kinutri-alimentos.json", alimentos);
-  showToast("Alimentos exportados com sucesso!");
+  return exportarDados(foodService, "kinutri-alimentos.json", "Alimentos exportados com sucesso!");
 }
 
-function exportarBackupCompleto() {
-  const backup = {
-    usuarios: JSON.parse(localStorage.getItem("kinutri_users")) || [],
-    planos: JSON.parse(localStorage.getItem("kinutri_planos")) || [],
-    alimentos: JSON.parse(localStorage.getItem("kinutri_alimentos")) || [],
-    historico: JSON.parse(localStorage.getItem("kinutri_historico")) || [],
-    exportadoEm: new Date().toLocaleString("pt-BR")
-  };
-
-  downloadJSON("kinutri-backup-completo.json", backup);
-  showToast("Backup completo exportado com sucesso!");
+async function exportarBackupCompleto() {
+  try {
+    const results = await Promise.all([userService.list(), dietService.list(), foodService.list()]);
+    for (const result of results) {
+      if (result.status !== "success") throw new Error(result.message || "Erro ao exportar dados.");
+    }
+    const [usuarios, planos, alimentos] = results.map(result => result.data);
+    const backup = { usuarios, planos, alimentos, historico: planos, exportadoEm: new Date().toLocaleString("pt-BR") };
+    downloadJSON("kinutri-backup-completo.json", backup);
+    showToast("Backup completo exportado com sucesso!");
+  } catch (error) { showToast(error.message, "error"); }
 }

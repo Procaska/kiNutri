@@ -1,6 +1,6 @@
 async function buscarAlimentosDaDieta(dietaId) {
   try {
-    const result = await api.get(`/dietas/${dietaId}/alimentos`);
+    const result = await dietService.listFoods(dietaId);
 
     if (result.status !== "success") {
       return [];
@@ -112,12 +112,11 @@ async function carregarMeuPlano() {
 
   try {
 
-    const result = await api.get(
-      `/usuarios/${user.id}/dietas`
-    );
+    const result = await dietService.listByUser(user.id);
+
+    if (result.status !== "success") throw new Error(result.message || "Não foi possível carregar as dietas.");
 
     if (
-      result.status !== "success" ||
       !result.data ||
       result.data.length === 0
     ) {
@@ -137,8 +136,8 @@ async function carregarMeuPlano() {
 
     for (const dieta of dietas) {
 
-      const alimentos =
-        await buscarAlimentosDaDieta(dieta.id);
+      dieta.foods = await buscarAlimentosDaDieta(dieta.id);
+      const alimentos = dieta.foods;
 
       html += `
         <article class="diet-card">

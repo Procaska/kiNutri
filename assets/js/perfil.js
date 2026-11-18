@@ -35,7 +35,7 @@ async function carregarPerfil() {
   }
 
   try {
-    const result = await api.get(`/usuarios/${user.id}/perfil`);
+    const result = await userService.getProfile(user.id);
 
     if (result.status !== "success") {
       throw new Error(
@@ -105,6 +105,9 @@ async function carregarPerfil() {
 
 async function salvarPerfil(event) {
   event.preventDefault();
+  const formController = Object.create(FormControllerPrototype).init(event.target);
+  if (!formController.validate()) return;
+  const fields = formController.values();
 
   const user = getUserSessionPerfil();
 
@@ -116,22 +119,22 @@ async function salvarPerfil(event) {
 
   const dados = {
     birth_date:
-      document.getElementById("perfilNascimento")?.value || "",
+      fields.perfilNascimento || "",
 
     gender:
-      document.getElementById("perfilGenero")?.value || "",
+      fields.perfilGenero || "",
 
     weight:
-      Number(document.getElementById("perfilPeso")?.value) || 0,
+      Number(fields.perfilPeso) || 0,
 
     height:
-      Number(document.getElementById("perfilAltura")?.value) || 0,
+      Number(fields.perfilAltura) || 0,
 
     activity_level:
-      document.getElementById("perfilAtividade")?.value || "",
+      fields.perfilAtividade || "",
 
     goal:
-      document.getElementById("perfilObjetivo")?.value || ""
+      fields.perfilObjetivo || ""
   };
 
   // Estado de carregamento
@@ -142,8 +145,7 @@ async function salvarPerfil(event) {
   }
 
   try {
-    const result = await api.post(
-      `/usuarios/${user.id}/perfil`,
+    const result = await userService.saveProfile(user.id,
       dados
     );
 
